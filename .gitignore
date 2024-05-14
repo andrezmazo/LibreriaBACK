@@ -1,0 +1,10 @@
+# Ignorar archivos .DS_Store generados por macOS
+.DS_Store
+
+# Ignorar archivos de registro
+*.log
+
+# Ignorar directorios node_modules
+/node_modules
+npm-debug.log
+yarn-error.log
