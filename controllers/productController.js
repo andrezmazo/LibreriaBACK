@@ -56,6 +56,25 @@ exports.getAll = async (req, res) => {
   }
 };
 
+exports.list = async (req, res) => {
+  const { rowsPerPage, page } = req.query;
+  const offset = (page - 1) * rowsPerPage;
+  
+  try {
+    const products = await Product.findAll({
+      offset: offset,
+      limit: parseInt(rowsPerPage)
+    });
+
+    const totalProducts = await Product.count();
+
+    res.json({ products, totalProducts });
+  } catch (error) {
+    console.error('Error al obtener productos:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};
+
 // Endpoint para obtener un producto por Id
 exports.getById = async (req, res) => {
   const { id } = req.params;

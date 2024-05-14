@@ -15,6 +15,7 @@ router.delete("/user/:id", userController.delete);
 // // Rutas de products
 router.post("/product", productController.create);
 router.get("/product", productController.getAll);
+router.get("/product/list", productController.list);
 router.get("/product/:id", productController.getById);
 router.put("/product/:id", productController.update);
 router.delete("/product/:id", productController.delete);
