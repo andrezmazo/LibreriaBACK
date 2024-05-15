@@ -1,6 +1,7 @@
 const express = require("express");
 const sequelize = require("./models/sequelize");
 const routes = require("./routes");
+const cors = require('cors');
 
 const app = express();
 
@@ -15,7 +16,8 @@ sequelize
   });
 
 // Middlewares
-app.use(express.json());
+// app.use(express.json());
+app.use(cors());
 
 // Rutas
 app.use("/", routes);

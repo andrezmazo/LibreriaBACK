@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { Op } = require('sequelize');
 const Product = require("../models/productModel");
 
 // Endpoint para crear un nuevo producto
@@ -56,19 +57,22 @@ exports.getAll = async (req, res) => {
   }
 };
 
-exports.list = async (req, res) => {
-  const { rowsPerPage, page } = req.query;
-  const offset = (page - 1) * rowsPerPage;
-  
+exports.list = async (req, res) => {  
   try {
-    const products = await Product.findAll({
+    const { rowsPerPage, page, title } = req.query;
+    const offset = (page-1) * rowsPerPage;
+    let whereClause = {};
+    if (title) {
+      whereClause = { title: { [Op.like]: `%${title}%` } };
+    }
+    console.log('WHERECLAUSE: ',whereClause);
+    const products = await Product.findAndCountAll({
+      where: whereClause,
       offset: offset,
       limit: parseInt(rowsPerPage)
     });
 
-    const totalProducts = await Product.count();
-
-    res.json({ products, totalProducts });
+    res.json({ content:products.rows, totalElements:products.count });
   } catch (error) {
     console.error('Error al obtener productos:', error);
     res.status(500).json({ message: 'Error interno del servidor' });
