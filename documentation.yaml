@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Libreria
-  description: Prueba tecnica
+  description: Documentación de prueba técnica por andrez.mazo@gmail.com
   version: "1.0"
 servers:
 - url: http://localhost:3000/
