@@ -1,6 +1,4 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const { Op } = require('sequelize');
+const { Op } = require("sequelize");
 const Product = require("../models/productModel");
 
 // Endpoint para crear un nuevo producto
@@ -23,7 +21,7 @@ exports.create = async (req, res) => {
     if (existingProduct) {
       return res
         .status(400)
-        .json({ message: "El nombre de producto ya está en uso" });
+        .json({ message: "El SKU del producto ya está en uso" });
     }
 
     // Crear el producto
@@ -57,25 +55,26 @@ exports.getAll = async (req, res) => {
   }
 };
 
-exports.list = async (req, res) => {  
+exports.list = async (req, res) => {
   try {
     const { rowsPerPage, page, title } = req.query;
-    const offset = (page-1) * rowsPerPage;
+    const offset = (page - 1) * rowsPerPage;
     let whereClause = {};
     if (title) {
       whereClause = { title: { [Op.like]: `%${title}%` } };
     }
-    console.log('WHERECLAUSE: ',whereClause);
+    console.log("WHERECLAUSE: ", whereClause);
     const products = await Product.findAndCountAll({
       where: whereClause,
       offset: offset,
-      limit: parseInt(rowsPerPage)
+      limit: parseInt(rowsPerPage),
+      order: [['id', 'DESC']]
     });
 
-    res.json({ content:products.rows, totalElements:products.count });
+    res.json({ content: products.rows, totalElements: products.count });
   } catch (error) {
-    console.error('Error al obtener productos:', error);
-    res.status(500).json({ message: 'Error interno del servidor' });
+    console.error("Error al obtener productos:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
@@ -98,24 +97,43 @@ exports.getById = async (req, res) => {
 // Endpoint para actualizar un producto por su ID
 exports.update = async (req, res) => {
   const { id } = req.params;
-  const { productname, password, role } = req.body;
+  const {
+    handle,
+    title,
+    description,
+    sku,
+    grams,
+    stock,
+    price,
+    comparePrice,
+    barcode,
+  } = req.body;
 
   try {
     // Verificar si el producto existe
-    const product = await Product.findByPk(id);
+    let product = await Product.findByPk(id);
     if (!product) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
+    const existingProduct = await Product.findOne({ where: { sku, id: { [Op.not]: id } } });
+    if (existingProduct) {
+      return res.status(400).json({ message: "El SKU del producto ya está en uso" });
+    }
 
     // Actualizar el producto
-    product.productname = productname || product.productname;
-    if (password) {
-      product.password = await bcrypt.hash(password, 10);
-    }
-    product.role = role || product.role;
-    await product.save();
+    product = await product.update({
+      handle,
+      title,
+      description,
+      sku,
+      grams,
+      stock,
+      price,
+      comparePrice,
+      barcode,
+    });
 
-    res.json(product);
+    res.status(200).json(product);
   } catch (error) {
     console.error("Error al actualizar producto por ID:", error);
     res.status(500).json({ message: "Error interno del servidor" });

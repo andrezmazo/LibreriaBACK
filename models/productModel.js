@@ -4,6 +4,11 @@ const sequelize = require("./sequelize");
 const Product = sequelize.define(
   "Product",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     handle: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -17,7 +22,7 @@ const Product = sequelize.define(
       allowNull: true,
     },
     sku: {
-      type: DataTypes.STRING,
+      type: DataTypes.FLOAT,
       allowNull: false,
       unique: true,
     },
@@ -38,7 +43,7 @@ const Product = sequelize.define(
       allowNull: false,
     },
     barcode: {
-      type: DataTypes.STRING,
+      type: DataTypes.FLOAT,
       allowNull: false,
     },
   },
