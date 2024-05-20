@@ -32,34 +32,34 @@ exports.create = async (req, res) => {
   }
 };
 
-// // Controlador para iniciar sesión
-// exports.login = async (req, res) => {
-//   const { username, password } = req.body;
+// Controlador para iniciar sesión
+exports.login = async (req, res) => {
+  const {username, password} = req.body;
 
-//   try {
-//     // Buscar al usuario por su nombre de usuario
-//     const user = await User.findOne({ where: { username } });
+  try {
+    // Buscar al usuario por su nombre de usuario
+    const user = await User.findOne({where: {username}});
 
-//     // Verificar si el usuario existe y si la contraseña es correcta
-//     if (!user || !bcrypt.compareSync(password, user.password)) {
-//       return res
-//         .status(401)
-//         .json({ message: "Nombre de usuario o contraseña incorrectos" });
-//     }
+    // Verificar si el usuario existe y si la contraseña es correcta
+    if (!user || !bcrypt.compareSync(password, user.password)) {
+      return res
+        .status(401)
+        .json({message: "Nombre de usuario o contraseña incorrectos"});
+    }
 
-//     // Generar token de autenticación
-//     const token = jwt.sign(
-//       { id: user.id, username: user.username },
-//       "clave_secreta",
-//       { expiresIn: "1h" }
-//     );
+    // Generar token de autenticación
+    const token = jwt.sign(
+      {id: user.id, username: user.username},
+      "clave_secreta",
+      {expiresIn: "1h"}
+    );
 
-//     res.json({ token });
-//   } catch (error) {
-//     console.error("Error al iniciar sesión:", error);
-//     res.status(500).json({ message: "Error interno del servidor" });
-//   }
-// };
+    res.json({token});
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    res.status(500).json({message: "Error interno del servidor"});
+  }
+};
 
 exports.getAll = async (req, res) => {
   try {

@@ -63,7 +63,6 @@ exports.list = async (req, res) => {
     if (title) {
       whereClause = { title: { [Op.like]: `%${title}%` } };
     }
-    console.log("WHERECLAUSE: ", whereClause);
     const products = await Product.findAndCountAll({
       where: whereClause,
       offset: offset,
