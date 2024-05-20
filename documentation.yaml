@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Libreria
-  description: Documentación de prueba técnica por andrez.mazo@gmail.com
+  description:  Documentación de prueba técnica por andrez.mazo@gmail.com
   version: "1.0"
 servers:
 - url: http://localhost:3000/
@@ -21,10 +21,6 @@ paths:
           description: successful operation
           content:
             application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
         "500":
           description: Ocurrió  un error al consultar los usuario
           content: {}
@@ -39,7 +35,6 @@ paths:
         content:
           application/json:
             schema:
-              items:
                 $ref: '#/components/schemas/User'
         required: true
       responses:
@@ -70,9 +65,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/User'
         "500":
           description: Un error ocurrió al intentar consultar el usuario
           content: {}
@@ -110,9 +103,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/User'
         required: true
       responses:
         "200":
@@ -143,7 +134,6 @@ paths:
         "403":
           description: Email o contraseña inválida
           content: {}
-      x-codegen-request-body-name: body
   /product:
     get:
       tags:
@@ -157,9 +147,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Product'
         "500":
           description: Error interno del servidor
           content: {}
@@ -174,8 +162,7 @@ paths:
         content:
           application/json:
             schema:
-              items:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Product'
         required: true
       responses:
         "200":
@@ -199,9 +186,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/Product'
         required: true
       responses:
         "200":
@@ -224,9 +209,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Product'
         "500":
           description: Error interno del servidor
           content: {}
@@ -261,15 +244,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/List'
+                $ref: '#/components/schemas/Product'
         "500":
           description: Error interno del servidor
           content: {}
 components:
   schemas:
     User:
+      type: object
       properties:
         id:
           type: integer
@@ -292,16 +274,38 @@ components:
           password:
             type: string
             example: admin
-    List:
+    Product:
         type: object
         properties:
-          rowsPerPage:
+          id:
             type: integer
-            example: 10
-          page:
-            type: integer
-            example: 1
+            example: 265
+          handle:
+            type: string
+            example: cola-glitter-23-grs
           title:
             type: string
-            example: col
+            example: COLA 23 GRS
+          description:
+            type: string
+            example: <p><strong>Características:</strong></p>\n<ul>\n<li>Para hacer pegaduras, contornos, decorar y pintar sobre papel, papel cartón y cartulina.</li>\n<li>Posee un brillo intenso con glitter.</li>\n<li>Lavable (no mancha las ropas).</li>\n</ul>
+          sku:
+            type: string
+            example: 60870131089
+          grams:
+            type: integer
+            example: 100
+          stock:
+            type: integer
+            example: 10089
+          price:
+            type: integer
+            example: 1008
+          comparePrice:
+            type: integer
+            example: 10089
+          barcode:
+            type: string
+            example: 78911530036698
+            
 x-original-swagger-version: "2.0"
