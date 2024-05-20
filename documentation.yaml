@@ -1,0 +1,307 @@
+openapi: 3.0.1
+info:
+  title: Libreria
+  description: Prueba tecnica
+  version: "1.0"
+servers:
+- url: http://localhost:3000/
+tags:
+- name: user
+- name: product
+paths:
+  /user:
+    get:
+      tags:
+      - user
+      summary: Solicitar información de usuarios
+      description: "Solicitar listado de usuarios previamente creados\
+        \ lista se obtendrá la siguiente información: id, username, password y role"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        "500":
+          description: Ocurrió  un error al consultar los usuario
+          content: {}
+    post:
+      tags:
+      - user
+      summary: Crear un nuevo usuario
+      description: "Crear un nuevo usuario enviando por medio del body los\
+        \ siguientes parámetros: username, password, role."
+      requestBody:
+        description: información del usuario
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content: {}
+        "400":
+          description: El nombre de usuario ya está en uso
+          content: {}
+  /user/{id}:
+    get:
+      tags:
+      - user
+      summary: Solicitar información de un usuario
+      description: "Solicitar un usuario previamente creados, en esta\
+        \ lista se obtendrá la siguiente información: id, username, password, role"
+      parameters:
+      - name: id
+        in: path
+        description: id del usuario
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        "500":
+          description: Un error ocurrió al intentar consultar el usuario
+          content: {}
+        "404":
+          description: No tienes permiso para consultar este usuario
+          content: {}
+
+    delete:
+      tags:
+      - user
+      summary: Eliminar usuario previamente existente
+      description: Eliminar usuario por medio del id proporcionado en el
+        query
+      parameters:
+      - name: id
+        in: path
+        description: Id usuario para eliminar
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Successful response
+          content: {}
+      security:      
+    put:
+      tags:
+      - user
+      summary: Actualizar un usuario previamente existente
+      description: "Actualizar un usuario enviando por medio del body con\
+        \ los siguientes parámetros: id, username, password, role"
+      requestBody:
+        description: actualización de un usuario
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content: {}
+  /login:
+    post:
+      tags:
+      - user
+      summary: Identificarse  para ingresar a la aplicación
+      description: "Identificarse  para ingresar a la aplicación enviando por medio\
+        \ del body los siguientes parámetros: username y password. Regresa informació\
+        token JWS"
+      requestBody:
+        description: información del usuario a ingresar
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content: {}
+        "500":
+          description: Error al registrar información
+          content: {}
+        "403":
+          description: Email o contraseña inválida
+          content: {}
+      x-codegen-request-body-name: body
+  /product:
+    get:
+      tags:
+      - product
+      summary: Solicitar información de los prodcutos
+      description: "Solicitar listado de prodcutos previamente creados\
+        \ lista se obtendrá la siguiente información: id, handle, title, description, sku, grams, stock, price, comparePrice, y barcode"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        "500":
+          description: Error interno del servidor
+          content: {}
+    post:
+      tags:
+      - product
+      summary: Crear un nuevo usuario
+      description: "Crear un nuevo usuario enviando por medio del body los\
+        \ siguientes parámetros id, handle, title, description, sku, grams, stock, price, comparePrice, y barcode."
+      requestBody:
+        description: información del usuario
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content: {}
+        "400":
+          description: El nombre de producto ya está en uso
+          content: {}
+        "500":
+          description: Error al crear producto
+          content: {}
+      x-codegen-request-body-name: body
+    put:
+      tags:
+      - product
+      summary: Actualizar un producto previamente existente
+      description: "Actualizar un producto enviando por medio del body con\
+        \ los siguientes parámetros:  id, handle, title, description, sku, grams, stock, price, comparePrice, y barcode."
+      requestBody:
+        description: actualización de un producto
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content: {}
+        "500":
+          description: Error al crear producto
+          content: {}
+      x-codegen-request-body-name: body
+  /product/{id}:
+    get:
+      tags:
+      - product
+      summary: Solicitar información de un prodcuto
+      description: "Solicitar listado de un prodcuto previamente creados, en esta\
+        \ lista se obtendrá la siguiente información: id, handle, title, description, sku, grams, stock, price, comparePrice, y barcode"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        "500":
+          description: Error interno del servidor
+          content: {}
+    delete:
+      tags:
+      - product
+      summary: Eliminar prodcuto prodcuto existente
+      description: Eliminar prodcuto por medio del id proporcionado en el
+        query
+      parameters:
+      - name: id
+        in: path
+        description: Id prodcuto para eliminar
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Successful response
+          content: {}
+  /product/list:
+    get:
+      tags:
+      - product
+      summary: Solicitar información de un prodcuto
+      description: "Solicitar un listado filrtado de un prodcuto previamente creados, en esta\
+        \ lista se obtendrá la siguiente información: id, handle, title, description, sku, grams, stock, price, comparePrice, y barcode y se envia por medio de body rowsPerPage, page y title para filtrar la indormacion a mostrar"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/List'
+        "500":
+          description: Error interno del servidor
+          content: {}
+components:
+  schemas:
+    User:
+      properties:
+        id:
+          type: integer
+          example: 12
+        username:
+          type: string
+          example: pruebaDeUsuario1
+        password:
+          type: string
+          example: pruebaDeUsuario1
+        role:
+          type: string
+          example: user
+    Login:
+        type: object
+        properties:
+          username:
+            type: string
+            example: admin
+          password:
+            type: string
+            example: admin
+    List:
+        type: object
+        properties:
+          rowsPerPage:
+            type: integer
+            example: 10
+          page:
+            type: integer
+            example: 1
+          title:
+            type: string
+            example: col
+x-original-swagger-version: "2.0"
