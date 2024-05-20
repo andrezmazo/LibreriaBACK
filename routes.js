@@ -13,7 +13,7 @@ router.get("/user/:id", userController.getById);
 router.put("/user/:id", userController.update);
 router.delete("/user/:id", userController.delete);
 
-// // Rutas de products
+// Rutas de products
 router.post("/product", productController.create);
 router.get("/product", productController.getAll);
 router.get("/product/list", productController.list);

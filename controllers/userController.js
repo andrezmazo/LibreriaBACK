@@ -34,8 +34,6 @@ exports.create = async (req, res) => {
 
 // Controlador para iniciar sesión
 exports.login = async (req, res) => {
-  console.log("entra a login");
-  console.log(req.body);
   const {username, password} = req.body;
 
   try {
